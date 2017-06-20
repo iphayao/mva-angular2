@@ -4,19 +4,28 @@ import { Component, OnInit } from '@angular/core';
 @Component({
     selector: 'tasks',
     template: `<h4>This is the task components</h4>
-               <h5 *ngIf="toggle">Hello World</h5>
-               <ul>
-                    <li *ngFor="let person of people">
-                        {{ person }}
-                    </li>
-               </ul>`,
+               <span>Number is {{ num }}</span><br>
+               <p><button (click)="onClick()">Click me!</button></p>
+               <p><button (mouseenter)="onMouseEnter()">Mouse enter me!</button></p>
+               <p><input [(ngModel)]="sample"> <span>{{ sample }}</span></p>`
 })
 
 export class TasksComponent implements OnInit {
     constructor() {}
-    toggle: boolean = true;
-    people: Array<string> = ["Person1", "Person2", "Person3"];
+    
+    num: number = 17;
+    sample: string = "";
+
     ngOnInit() { }
+
+    onClick() {
+        alert("Button Clicked!")
+    }
+
+    onMouseEnter() {
+        alert("Mouse Entered!")
+    }
+
 }
 
 @Component({
@@ -32,4 +41,4 @@ export class AppComponent implements OnInit {
     ngOnInit() { }
 }
 
-bootstrap(AppComponent);
+bootstrap(AppComponent)
