@@ -1,25 +1,23 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { Component, OnInit, Injectable } from '@angular/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS  } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS, Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class TaskService {
-    tasks = ["First Task", "Second Task", "Third Task"];
+    tasks;// = ["First Task", "Second Task", "Third Task"];
 
-    update() {
+    constructor(private _http: Http) { }
+                                                                      
+    getTask() {
+        var aPromise = this._http.get('/tasks.json')
+        .map((response: Response) => response.json().data)
+        .toPromise();
 
+        aPromise.then(tasksFromServer => this.tasks = tasksFromServer);
     }
-}
-
-@Component({
-    selector: 'other',
-    template: `<h4>Other component</h4>`
-})
-
-export class OtherComponent implements OnInit {
-    constructor() { }
-
-    ngOnInit() { }
 }
 
 @Component({
@@ -29,7 +27,7 @@ export class OtherComponent implements OnInit {
                {{ taskService.tasks | json }}
                <ul>
                     <li *ngFor="let task of taskService.tasks">
-                        {{ task }}
+                        {{ task.title }}
                     </li>
                </ul>`
 })
@@ -37,26 +35,18 @@ export class OtherComponent implements OnInit {
 export class TasksComponent implements OnInit {
     constructor(public taskService: TaskService) {}
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.taskService.getTask();
+    }
 
 }
 
 @Component({
     selector: 'my-app',
-    directives: [ROUTER_DIRECTIVES, TasksComponent],
-    providers: [ROUTER_PROVIDERS],
+    directives: [TasksComponent],
     template: `<h1>Hello World</h1>
-               <a href="" [routerLink]="['Tasks']">Tasks</a>
-               <a href="" [routerLink]="['Other']">Other</a>
-               <a href="" [routerLink]="['Something']">Something</a>
-               <router-outlet></router-outlet>`
+               <tasks></tasks>`
 })
-
-@RouteConfig([
-    {path: '/tasks', name: 'Tasks', component: TasksComponent, useAsDefault: true },
-    {path: '/other', name: 'Other', component: OtherComponent},
-    {path: '/somthing', name: 'Something', component: OtherComponent}
-])
 
 export class AppComponent implements OnInit {
     constructor() {}
@@ -64,4 +54,4 @@ export class AppComponent implements OnInit {
     ngOnInit() { }
 }
 
-bootstrap(AppComponent)
+bootstrap(AppComponent, [HTTP_PROVIDERS])
