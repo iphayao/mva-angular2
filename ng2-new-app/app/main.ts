@@ -3,14 +3,19 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'tasks',
-    template: `<h4 [class.red]="toggle">This is the task components</h4>
-               <h4 [ngClass]="{ red: toggle, blue: !toggle }">This is the task components</h4>`,
-    styles: [".red { color: red }", ".blue { color: blue }"]
+    template: `<h4>This is the task components</h4>
+               <h5 *ngIf="toggle">Hello World</h5>
+               <ul>
+                    <li *ngFor="let person of people">
+                        {{ person }}
+                    </li>
+               </ul>`,
 })
 
 export class TasksComponent implements OnInit {
     constructor() {}
-    toggle: boolean = false;
+    toggle: boolean = true;
+    people: Array<string> = ["Person1", "Person2", "Person3"];
     ngOnInit() { }
 }
 
