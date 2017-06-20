@@ -2,8 +2,21 @@ import { bootstrap } from '@angular/platform-browser-dynamic';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
+    selector: 'tasks',
+    template: `<h4>This is the task components</h4>`
+})
+
+export class TasksComponent implements OnInit {
+    constructor() {}
+
+    ngOnInit() { }
+}
+
+@Component({
     selector: 'my-app',
-    template: '<h1>Hello World</h1>'
+    directives: [TasksComponent],
+    template: `<h1>Hello World</h1>
+               <tasks></tasks>`
 })
 
 export class AppComponent implements OnInit {
