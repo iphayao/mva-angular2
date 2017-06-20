@@ -3,12 +3,14 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'tasks',
-    template: `<h4>This is the task components</h4>`
+    template: `<h4 [class.red]="toggle">This is the task components</h4>
+               <h4 [ngClass]="{ red: toggle, blue: !toggle }">This is the task components</h4>`
+    styles: [".red { color: red, }", ".blue { color: blue }"]
 })
 
 export class TasksComponent implements OnInit {
     constructor() {}
-
+    toggle: boolean = false;
     ngOnInit() { }
 }
 
