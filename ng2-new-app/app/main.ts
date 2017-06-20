@@ -1,30 +1,31 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
+
+@Injectable()
+export class TaskService {
+    tasks = ["First Task", "Second Task", "Third Task"];
+
+    update() {
+        
+    }
+}
 
 @Component({
     selector: 'tasks',
-    template: `<h4>This is the task components</h4>
-               <span>Number is {{ num }}</span><br>
-               <p><button (click)="onClick()">Click me!</button></p>
-               <p><button (mouseenter)="onMouseEnter()">Mouse enter me!</button></p>
-               <p><input [(ngModel)]="sample"> <span>{{ sample }}</span></p>`
+    providers: [TaskService],
+    template: `<h4>This is the tasks components</h4>
+               {{ taskService.tasks | json }}
+               <ul>
+                    <li *ngFor="let task of taskService.tasks">
+                        {{ task }}
+                    </li>
+               </ul>`
 })
 
 export class TasksComponent implements OnInit {
-    constructor() {}
-    
-    num: number = 17;
-    sample: string = "";
+    constructor(public taskService: TaskService) {}
 
     ngOnInit() { }
-
-    onClick() {
-        alert("Button Clicked!")
-    }
-
-    onMouseEnter() {
-        alert("Mouse Entered!")
-    }
 
 }
 
